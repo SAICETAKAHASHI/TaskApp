@@ -1,9 +1,19 @@
-<h1>New user</h1>
+<% provide(:title, 'Sign up') %>
+<h1>ユーザー登録</h1>
 
-<%= render "form", user: @user %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@user) do |f| %>
+      <%= f.label "ユーザー名" %>
+      <%= f.text_field :user_name %>
+      <br/>
+      <%= f.label "パスワード" %>
+      <%= f.password_field :password %>
+      <br/>
+      <%= f.label "パスワード確認" %>
+      <%= f.password_field :password_confirmation %>
 
-<br>
-
-<div>
-  <%= link_to "Back to users", users_path %>
+      <%= f.submit "ユーザー登録", class: "btn btn-primary" %>
+    <% end %>
+  </div>
 </div>
