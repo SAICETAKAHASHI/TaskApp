@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
-  resources :tasks
-  resources :statuses
+  get 'sessions/new'
+  #resources :tasks
+  #resources :statuses
   resources :users
-  root 'application#hello'
+  get '/signup', to: 'users#new'
+  get    '/login',   to: 'sessions#new'
+  post   '/login',   to: 'sessions#create'
+  delete '/logout',  to: 'sessions#destroy'
+  root 'sessions#new'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

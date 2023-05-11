@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_28_084008) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_10_104243) do
   create_table "statuses", force: :cascade do |t|
     t.string "display_text"
     t.datetime "created_at", null: false
@@ -32,10 +32,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_084008) do
 
   create_table "users", force: :cascade do |t|
     t.string "user_name"
-    t.string "user_password"
     t.integer "control_level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_digest"
   end
 
 end
