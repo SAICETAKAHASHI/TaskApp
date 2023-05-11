@@ -20,6 +20,18 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+#production:
+#  <<: *default
+#  database: db/production.sqlite3
 production:
   <<: *default
-  database: db/production.sqlite3
+  host: <%= ENV["SAMPLE_RAILS_HOST"] %>
+  database: <%= ENV["SAMPLE_RAILS_DATABASE"] %>
+  username: <%= ENV["SAMPLE_RAILS_DATABASE_USERNAME"] %>
+  password: <%= ENV["SAMPLE_RAILS_DATABASE_PASSWORD"] %>
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  charset: utf8
+  collation: utf8_general_ci
