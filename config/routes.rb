@@ -1,15 +1,33 @@
 Rails.application.routes.draw do
   get 'sessions/new'
-  #resources :tasks
-  #resources :statuses
   resources :users
+
+  #タスク一覧のルーティング
+  get '/tasks', to: 'tasks#index'
+  #タスク詳細画面へのルーティング
+  get '/tasks/:taskid', to: 'tasks#show'
+  #タスク追加画面へのルーティング
+  get '/tasks/new', to: 'tasks#new'
+  #タスク編集画面へのルーティング
+  get '/tasks/:taskid/edit', to: 'tasks#edit'
+  #タスク追加画面でPOST時のルーティング
+  post '/tasks', to: 'tasks#create'
+
+  post '/tasks/:taskid', to: 'tasks#update'
+  #put '/tasks/:taskid/edit', to: 'tasks#update'
+
+  delete '/tasks/:taskid', to: 'tasks#destroy'
+
   get '/signup', to: 'users#new'
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
   root 'sessions#new'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  
+  resources :tasks do
+    collection do
+      get 'search'
+    end
+  end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

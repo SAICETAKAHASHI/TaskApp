@@ -11,8 +11,8 @@ class SessionsController < ApplicationController
       #binding.pry
       if user && user.authenticate(password)
         log_in user
-
-        format.html { redirect_to user_url(user), notice: "" }
+        #ユーザーを絞ってタスク一覧を表示させたい
+        format.html { redirect_to "/tasks", notice: "" }
       else
         format.html { redirect_to '', notice: "ユーザー名又はパスワードが違います" }
       end

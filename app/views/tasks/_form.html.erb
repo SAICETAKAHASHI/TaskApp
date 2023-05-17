@@ -1,4 +1,4 @@
-<%= form_with(model: task) do |form| %>
+<%= form_with(model: Task.new, url: "/tasks/#{@task.id}") do |form| %>
   <% if task.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
@@ -13,42 +13,42 @@
 
   <div>
     <%= form.label :user_id, style: "display: block" %>
-    <%= form.number_field :user_id %>
+    <%= form.number_field :user_id, value:@task.user_id %>
   </div>
 
   <div>
     <%= form.label :display_text, style: "display: block" %>
-    <%= form.text_field :display_text %>
+    <%= form.text_field :display_text, value:@task.display_text %>
   </div>
 
   <div>
     <%= form.label :discription, style: "display: block" %>
-    <%= form.text_area :discription %>
+    <%= form.text_area :discription, value:@task.discription %>
   </div>
 
   <div>
     <%= form.label :start_date_time, style: "display: block" %>
-    <%= form.datetime_field :start_date_time %>
+    <%= form.datetime_field :start_date_time, value:@task.start_date_time %>
   </div>
 
   <div>
     <%= form.label :end_date_time, style: "display: block" %>
-    <%= form.datetime_field :end_date_time %>
+    <%= form.datetime_field :end_date_time, value:@task.end_date_time %>
   </div>
 
   <div>
     <%= form.label :status_id, style: "display: block" %>
-    <%= form.number_field :status_id %>
+    <%= form.number_field :status_id, value:@task.status_id %>
   </div>
 
   <div>
     <%= form.label :level, style: "display: block" %>
-    <%= form.number_field :level %>
+    <%= form.number_field :level, value:@task.level %>
   </div>
 
   <div>
     <%= form.label :label, style: "display: block" %>
-    <%= form.text_field :label %>
+    <%= form.text_field :label, value:@task.label %>
   </div>
 
   <div>
