@@ -4,5 +4,6 @@ set -o errexit
 
 bundle install
 bundle exec rails db:migrate
-bundle exec rails db:seed
+#データの初期埋め込みが必要ない為以下は実行しない
+#bundle exec rails db:seed
 bundle exec rails assets:precompile
