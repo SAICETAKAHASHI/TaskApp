@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  get 'sessions/new'
-  resources :users
+  devise_for :users
+
+  root 'tasks#index'
 
   #タスク一覧のルーティング
   get '/tasks', to: 'tasks#index'
@@ -18,11 +19,13 @@ Rails.application.routes.draw do
 
   delete '/tasks/:taskid', to: 'tasks#destroy'
 
-  get '/signup', to: 'users#new'
-  get    '/login',   to: 'sessions#new'
-  post   '/login',   to: 'sessions#create'
-  delete '/logout',  to: 'sessions#destroy'
-  root 'sessions#new'
+  scope :admin do
+    resources :users
+  end
+
+  devise_scope :user do
+    get '/users/sign_out' => 'devise/sessions#destroy'
+  end
   
   resources :tasks do
     collection do

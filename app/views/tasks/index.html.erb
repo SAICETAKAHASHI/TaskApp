@@ -1,19 +1,43 @@
-<p style="color: green"><%= notice %></p>
+<!DOCTYPE html>
+<html>
+  <body>
+    <% if user_signed_in? %>
+      <h1 class="h1">タスク一覧</h1>
+      <%= link_to "ログアウト", destroy_user_session_path, class: 'delete' %> <!-- ログアウトしてログイン画面に移行する -->
+      <h3>タスク検索</h3>
+      <%= search_form_for @q, url: search_tasks_path do |f| %>
+      <%= f.label :display_text_cont, 'タスク名' %>
+      <%= f.search_field :display_text %>
+      <%= f.submit '検索' %>
+      <% end %>
 
-<h1>タスク一覧</h1>
+      <div id="tasks">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>タスク名</th>
+              <th>状態</th>
+              <th>優先度</th>
+              <th>詳細</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <% @tasks.each do |task| %>
+            <tr>
+              <td><%= task.display_text %></td>
+              <td><%= task.status_id %></td>
+              <td><%= task.level %></td>
+              <td><%= link_to "詳細", "/tasks/#{task.id}" %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <h2> 現在ログインしていません </h2>
+      <%= link_to "ログイン", new_user_session_path, class: 'post' %> <!-- ログイン画面に移行する -->
+      <%= link_to "新規登録", new_user_registration_path, class: 'post' %> <!-- 新規登録画面に移行する -->
+    <% end %>
+  </body>
 
-<h1>タスク検索</h1>
-<%= search_form_for @q, url: search_tasks_path do |f| %>
-  <%= f.label :display_text_cont, 'タスク名' %>
-  <%= f.search_field :display_text %>
-  <br>
-  <%= f.submit '検索' %>
-<% end %>
-
-<div id="tasks">
-  <% @tasks.each do |task| %>
-    <%= render task %>
-    <%= link_to "Show this task", "/tasks/#{task.id}" %>
-  <% end %>
-</div>
-
+</html>

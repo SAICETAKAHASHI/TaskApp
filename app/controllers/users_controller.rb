@@ -1,67 +1,60 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, only: [ :show, :edit, :update, :destroy ]
+  before_action :chk_admin
 
-  # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.all.eager_load(:tasks).page(params[:page])
   end
 
-  # GET /users/1 or /users/1.json
   def show
     @user = User.find(params[:id])
   end
 
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        log_in @user
-        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+    if @user.save!
+      redirect_to @user, flash: { notice: 'Success Create' }
+    else
+      redirect_to new_user_path, flash: { error: 'Failed Create' }
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
+  def edit
+    @user = User.find(params[:id])
+  end
+
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      redirect_to @user, flash: { notice: 'Success Changes' }
+    else
+      redirect_to new_user_path, flash: { error: 'Failed Changes' }
     end
   end
 
-  # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy
+    user = User.find(params[:id])
 
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
+    if user.destroy!
+      redirect_to user_index_path, notice: "Success Delete"
+    else
+      redirect_to user_index_path, alert: "Failed Delete"
     end
   end
+  private 
+  def user_params
+    patams.require(:user).permit(:email, :role)
+  end
+  
+  def chk_admin
+    render_404 if !current_user.is_admin?
+  end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:user_name, :password, :password_confirmation)
-    end
+  def render_404
+    render template: 'static_pages/error', status: 404, layout: 'application', content_type: 'text/html'
+  end
 end
